@@ -5,7 +5,7 @@ import { XCircleIcon } from '@heroicons/react/solid';
 type TModalProps = {
   open: boolean,
   setOpen: Dispatch<SetStateAction<boolean>>,
-  children: ReactNode | ReactNode[];
+  children: ReactNode
 }
 
 const Modal = ({ open, setOpen, children }: TModalProps) => {
