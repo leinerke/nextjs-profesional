@@ -1,18 +1,31 @@
 import { FormEvent, useRef } from 'react';
-import { useAuth } from '@hooks/useAuth';
+import { useRouter } from 'next/router';
 import { LockClosedIcon } from '@heroicons/react/solid';
+import { useAuth } from '@hooks/useAuth';
+import axios from 'axios';
 
 export default function LoginPage() {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const auth = useAuth();
+  const router = useRouter();
 
   const submitHanlder = (event: FormEvent) => {
     event.preventDefault();
     const email = emailRef.current?.value;
     const password = passwordRef.current?.value;
     if (email && password && auth.signIn) {
-      auth.signIn(email, password);
+      auth.signIn(email, password)
+        .then(() => router.push('/dashboard'))
+        .catch(e => {
+          if (axios.isAxiosError(e)) {
+            if (e.response?.status === 401) {
+              alert('Email o password incorrect');
+            } else {
+              alert('Ha ocurrido un error, por favor intente mas tarde');
+            }
+          }
+        });
     }
   };
 
