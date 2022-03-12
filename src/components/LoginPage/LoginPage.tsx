@@ -1,16 +1,19 @@
 import { FormEvent, useRef } from 'react';
+import { useAuth } from '@hooks/useAuth';
 import { LockClosedIcon } from '@heroicons/react/solid';
 
 export default function LoginPage() {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+  const auth = useAuth();
 
   const submitHanlder = (event: FormEvent) => {
     event.preventDefault();
     const email = emailRef.current?.value;
     const password = passwordRef.current?.value;
-
-    console.log({ email, password });
+    if (email && password && auth.signIn) {
+      auth.signIn(email, password);
+    }
   };
 
   return (
